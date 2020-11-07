@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,14 @@ using System.Threading.Tasks;
 
 namespace REST_Client.Model
 {
-    class CarToSend
+    public class CarToSend
     {
+        [JsonIgnore]
+        public IList<string> Types { get; set; } = new List<string> { "SUV", "Micro", "Minivan", "Sedan", "CUV", "Roadster" };
 
         public void setType(string typeString)
         {
-            IList<string> tempList = new List<string>();
-            tempList.Add("SUV");
-            tempList.Add("Micro");
-            tempList.Add("Minivan");
-            tempList.Add("Sedan");
-            tempList.Add("CUV");
-            tempList.Add("Roadster");
-            this.Typ=tempList.IndexOf(typeString);
+            this.Typ=Types.IndexOf(typeString);
         }
 
         public string Name { get; set; }

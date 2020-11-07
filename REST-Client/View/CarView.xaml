@@ -24,7 +24,7 @@
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Rectangle Fill="White"></Rectangle>
-                        <Label Content="{Binding Name}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="45" Width="328" FontSize="24" FontWeight="Bold"/>
+                        <TextBox Text="{Binding Name}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="37" Width="328" FontSize="24" FontWeight="Bold"/>
                         <Grid HorizontalAlignment="Left" Height="153" Margin="560,0,0,-3" VerticalAlignment="Top" Width="240">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0*"/>
@@ -35,9 +35,10 @@
                             <Label Content="{Binding CreatedAt}" HorizontalAlignment="Left" Margin="106,52,0,0" VerticalAlignment="Top" Grid.Row="1" Height="26" Width="115"/>
                             <Label Content="{Binding ModifiedAt}" HorizontalAlignment="Left" Margin="106,83,0,0" VerticalAlignment="Top" Grid.Row="1" Height="26" Width="115"/>
                         </Grid>
-                        <Label Content="{Binding Typ}" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,-0.017"/>
+                        <ComboBox ItemsSource="{Binding Types}" SelectedItem="{Binding Typ}" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,-0.017"/>
                         <Label Content="ID: " HorizontalAlignment="Left" Margin="10,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,-0.017"/>
                         <Label Content="{Binding CarId}" HorizontalAlignment="Left" Margin="30,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.299,-0.017"/>
+                        <Button Content="Update" Margin="701,19,5,91"></Button>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

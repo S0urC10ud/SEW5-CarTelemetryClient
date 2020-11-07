@@ -7,27 +7,20 @@ using System.Windows.Input;
 
 namespace REST_Client.Model
 {
-    public class Car
+    public class Car : CarToSend
     {
         public int CarId { get; set; }
-        public string Name { get; set; }
 
         public void updateType()
         {
-            IList<string> tempList = new List<string>();
-            tempList.Add("SUV");
-            tempList.Add("Micro");
-            tempList.Add("Minivan");
-            tempList.Add("Sedan");
-            tempList.Add("CUV");
-            tempList.Add("Roadster");
-            this.Typ = tempList[Int32.Parse(this.Typ)];
+            this.Typ = Types[Int32.Parse(this.Typ)];
         }
 
-        public string Typ { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+
+        public string Typ { get; set; }
 
         public ICommand DeleteCommand { get; set; }
     }
