@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace REST_Client.Model
 {
-    public class Car
+    class CarToSend
     {
-        public int CarId { get; set; }
-        public string Name { get; set; }
 
-        public void updateType()
+        public void setType(string typeString)
         {
             IList<string> tempList = new List<string>();
             tempList.Add("SUV");
@@ -21,14 +18,10 @@ namespace REST_Client.Model
             tempList.Add("Sedan");
             tempList.Add("CUV");
             tempList.Add("Roadster");
-            this.Typ = tempList[Int32.Parse(this.Typ)];
+            this.Typ=tempList.IndexOf(typeString);
         }
 
-        public string Typ { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime ModifiedAt { get; set; }
-
-        public ICommand DeleteCommand { get; set; }
+        public string Name { get; set; }
+        public int Typ { get; set; }
     }
 }
