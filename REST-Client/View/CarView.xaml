@@ -14,7 +14,7 @@
     <Grid>
         <Button Content="Refresh" HorizontalAlignment="Left" Margin="689,2,0,0" VerticalAlignment="Top" Width="58" Command="{Binding RefreshCars}"/>
 
-        <ListBox HorizontalAlignment="Left" Height="399" Margin="0,25,0,0" VerticalAlignment="Top" Width="796" ItemsSource="{Binding Cars.AsObservable}" >
+        <ListBox HorizontalAlignment="Left" Height="389" Margin="0,30,0,0" VerticalAlignment="Top" Width="802" ItemsSource="{Binding Cars.AsObservable}" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="130" VerticalAlignment="Bottom" Width="750">
@@ -23,7 +23,7 @@
                                 <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
                             </ContextMenu>
                         </Grid.ContextMenu>
-                        <Rectangle Fill="White" Margin="0,0,-17,0"></Rectangle>
+                        <Rectangle Fill="White" Margin="0,0,-38,0"></Rectangle>
                         <TextBox Text="{Binding Name}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="37" Width="328" FontSize="24" FontWeight="Bold"/>
                         <Grid HorizontalAlignment="Left" Height="153" Margin="560,0,0,-3" VerticalAlignment="Top" Width="240">
                             <Grid.RowDefinitions>
@@ -47,7 +47,7 @@
             <Label Content="Car Name:&#xD;&#xA;" Margin="0,0,0,-7" Width="75"/>
             <TextBox TextWrapping="Wrap" Text="{Binding CarToAdd.Name}" Width="120" VerticalAlignment="Center"/>
             <Label Content="Car Type:" Margin="20,0,0,-7" Width="63"/>
-            <ComboBox Width="120" SelectedValuePath="{Binding CarToAdd.Typ}">
+            <ComboBox Width="120" Text="{Binding CarToAdd.Typ}">
                 <ComboBoxItem IsSelected="True">SUV</ComboBoxItem>
                 <ComboBoxItem >Micro</ComboBoxItem>
                 <ComboBoxItem>Minivan</ComboBoxItem>
@@ -58,8 +58,7 @@
             <Button Content="Add" Command="{Binding AddCar}" HorizontalAlignment="Left" Margin="50,2,0,0"  VerticalAlignment="Top" Width="76"/>
         </StackPanel>
 
-
-        <Rectangle Fill="White" HorizontalAlignment="Left" Height="428" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="786" Visibility="{Binding LoadingVisibility}"/>
+        <Rectangle Fill="White" HorizontalAlignment="Left" Height="450" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="810" Visibility="{Binding LoadingVisibility}"/>
         <Image gif:ImageBehavior.AnimatedSource="Images/loading.gif" Visibility="{Binding LoadingVisibility}"/>
 
     </Grid>

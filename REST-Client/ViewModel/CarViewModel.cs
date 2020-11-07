@@ -66,9 +66,9 @@ namespace REST_Client.ViewModel
                 cts.setType(CarToAdd.Typ);
                 request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(cts), ParameterType.RequestBody);
                 client.Execute(request);
+                RefreshInfosWithTask();
             });
             RefreshInfosWithTask();
-
         }
 
         private async Task GetCarsAsync()
@@ -79,19 +79,20 @@ namespace REST_Client.ViewModel
             RestRequest request = new RestRequest("cars", RestSharp.DataFormat.Json);
             var response = await client.ExecuteAsync<List<Car>>(request);
 
-            await Task.Delay(2500);
+            
+            //await Task.Delay(2500);
+
             LoadingVisibility = Visibility.Hidden;
 
             response.Data?.ForEach(car => {
-                    car.DeleteCommand = new RelayCommand(e=> { client.Delete(new RestRequest("cars/"+car.CarId)); },e2=>true);
+                    car.DeleteCommand = new RelayCommand(e=> { client.Delete(new RestRequest("cars/"+car.CarId)); RefreshInfosWithTask(); },e2=>true);
                     car.UpdateCommand = new RelayCommand(e => {
                         var putRequest = new RestRequest("cars/" + car.CarId, Method.PUT);
                         CarToSend carToSend = new CarToSend { Name = car.Name };
                         carToSend.setType(car.Typ);
                         putRequest.AddJsonBody(carToSend);
                         client.Execute(putRequest);
-
-
+                        RefreshInfosWithTask();
                     }, e2 => true);
                     car.updateType();
                     Cars.Add(car);
