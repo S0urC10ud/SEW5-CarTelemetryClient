@@ -23,5 +23,7 @@ namespace REST_Client.Model
         public string Typ { get; set; }
 
         public ICommand DeleteCommand { get; set; }
+
+        public ICommand UpdateCommand { get; set; }
     }
 }

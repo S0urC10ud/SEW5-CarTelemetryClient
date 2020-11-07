@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -39,6 +40,22 @@ namespace REST_Client.ViewModel
             Task.Run(() => this.GetCarsAsync());
         }
 
+        public static string SerializeObject<T>(T obj, bool ignoreBase)
+        {
+            if (!ignoreBase)
+            {
+                return JsonConvert.SerializeObject(obj);
+            }
+
+            var myType = typeof(T);
+            var props = myType.GetProperties().Where(p => p.DeclaringType == myType).ToList();
+
+            var x = new ExpandoObject() as IDictionary<string, Object>;
+            props.ForEach(p => x.Add(p.Name, p.GetValue(obj, null)));
+
+            return JsonConvert.SerializeObject(x);
+        }
+
         public CarViewModel()
         {
             RefreshCars = new RelayCommand(e => RefreshInfosWithTask(), e2 => true);
@@ -67,6 +84,15 @@ namespace REST_Client.ViewModel
 
             response.Data?.ForEach(car => {
                     car.DeleteCommand = new RelayCommand(e=> { client.Delete(new RestRequest("cars/"+car.CarId)); },e2=>true);
+                    car.UpdateCommand = new RelayCommand(e => {
+                        var putRequest = new RestRequest("cars/" + car.CarId, Method.PUT);
+                        CarToSend carToSend = new CarToSend { Name = car.Name };
+                        carToSend.setType(car.Typ);
+                        putRequest.AddJsonBody(carToSend);
+                        client.Execute(putRequest);
+
+
+                    }, e2 => true);
                     car.updateType();
                     Cars.Add(car);
                 });
