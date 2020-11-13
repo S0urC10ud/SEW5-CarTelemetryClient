@@ -23,7 +23,7 @@ namespace REST_Client.ViewModel
     public class CarViewModel: INotifyPropertyChanged
     {
         private const string CARURL = "http://192.168.1.205:45455/api";
-        private RestClient client = new RestClient(CARURL);
+        private RestClient Client = new RestClient(CARURL);
 
         public Car CarToAdd { get; set; } = new Car { Name = "CarName", Typ = "SUV"};
         public ConcurrentObservableCollection<Car> Cars { get; set; } = new ConcurrentObservableCollection<Car>();
@@ -61,11 +61,11 @@ namespace REST_Client.ViewModel
             RefreshCars = new RelayCommand(e => RefreshInfosWithTask(), e2 => true);
             AddCar = new RelayCommand(e =>
             {
-                var request = new RestRequest("cars", Method.POST);
+                var request = new RestRequest("cars", Method.POST, RestSharp.DataFormat.Json);
                 var cts = new CarToSend { Name = CarToAdd.Name};
                 cts.setType(CarToAdd.Typ);
-                request.AddParameter("application/json; charset=utf-8", JsonConvert.SerializeObject(cts), ParameterType.RequestBody);
-                client.Execute(request);
+                request.AddJsonBody(cts);
+                Client.Execute(request);
                 RefreshInfosWithTask();
             });
             RefreshInfosWithTask();
@@ -77,7 +77,7 @@ namespace REST_Client.ViewModel
             Cars.Clear();
 
             RestRequest request = new RestRequest("cars", RestSharp.DataFormat.Json);
-            var response = await client.ExecuteAsync<List<Car>>(request);
+            var response = await Client.ExecuteAsync<List<Car>>(request);
 
             
             //await Task.Delay(2500);
@@ -85,13 +85,18 @@ namespace REST_Client.ViewModel
             LoadingVisibility = Visibility.Hidden;
 
             response.Data?.ForEach(car => {
-                    car.DeleteCommand = new RelayCommand(e=> { client.Delete(new RestRequest("cars/"+car.CarId)); RefreshInfosWithTask(); },e2=>true);
+                    car.DeleteCommand = new RelayCommand(e=> {
+                        var req = new RestRequest("cars/{id}", Method.DELETE);
+                        req.AddParameter("id", car.CarId, ParameterType.UrlSegment);
+                        Client.Execute(req);
+                        RefreshInfosWithTask(); 
+                    },e2=>true);
                     car.UpdateCommand = new RelayCommand(e => {
                         var putRequest = new RestRequest("cars/" + car.CarId, Method.PUT);
                         CarToSend carToSend = new CarToSend { Name = car.Name };
                         carToSend.setType(car.Typ);
                         putRequest.AddJsonBody(carToSend);
-                        client.Execute(putRequest);
+                        Client.Execute(putRequest);
                         RefreshInfosWithTask();
                     }, e2 => true);
                     car.updateType();
@@ -122,6 +127,5 @@ namespace REST_Client.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
